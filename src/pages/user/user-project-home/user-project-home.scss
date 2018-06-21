@@ -1,4 +1,9 @@
 page-user-project-home {
+    .editor-open-btn {
+        color: #fff !important;
+        background-color: #ff6700 !important;
+    }
+
     ion-buttons[start] {
         order: 1;
     }
