@@ -115,13 +115,16 @@ export class AdminProjectInterviewDetailPage {
     this.commonService.isLoadingActive = true;
     this.project_id = this.navParams.get('project_id');        
     this.project_participant_id = this.navParams.get('project_participant_id');
-    this.isHelpHide = true;    
-    this.keyboard.disableScroll(false); // 추가
+    this.isHelpHide = true;
+    // this.keyboard.disableScroll(false); // 추가
   }
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter AdminProjectInterviewDetailPage');
     let loading = this.commonService.presentLoading();
+    this.platform.ready().then(() => {
+      this.keyboard.disableScroll(false); // 추가
+    });
     
     this.adminService.getInterviews(this.project_participant_id)
     .finally(() => {

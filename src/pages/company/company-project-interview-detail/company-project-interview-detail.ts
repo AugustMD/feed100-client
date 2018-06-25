@@ -115,12 +115,16 @@ export class CompanyProjectInterviewDetailPage {
     this.project_id = this.navParams.get('project_id');    
     this.project_participant_id = this.navParams.get('project_participant_id');
     this.isHelpHide = true;    
-    this.keyboard.disableScroll(false); // 추가
+    // this.keyboard.disableScroll(false); // 추가
   }
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter CompanyProjectInterviewDetailPage');
     let loading = this.commonService.presentLoading();
+
+    this.platform.ready().then(() => {
+      this.keyboard.disableScroll(false); // 추가
+    });
     
     this.companyService.getInterviews(this.project_participant_id)
     .finally(() => {
