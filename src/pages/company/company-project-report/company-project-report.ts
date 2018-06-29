@@ -151,7 +151,29 @@ export class CompanyProjectReportPage {
           display: false,
         }
       },
-    }
+    },
+    {
+      title: '혼인여부',
+      // 서버에서 데이터 필요한 부분
+      datasets: [{
+        data: [0, 0],
+      }],
+      totalNum: 0,
+      colors: [
+        {backgroundColor:['rgba(184,185,187,0.9)','rgba(237,91,101,0.8)']},
+      ],
+      // 서버에서 데이터 필요한 부분
+      labels: ['미혼', '기혼'],
+      type: 'doughnut',
+      options: {
+        legend: {
+          display: false
+        },
+        title: {
+          display: false,
+        }
+      },
+    },
   ];
   
   projectUserParticipationConditionSlides = [];
@@ -327,6 +349,11 @@ export class CompanyProjectReportPage {
             if(index > -1) {
               this.tempProjectUserProfileSlides[3].datasets[0].data[index]++;
               this.tempProjectUserProfileSlides[3].totalNum++;
+            }
+            index = this.tempProjectUserProfileSlides[4].labels.indexOf(participants[i].marriage);
+            if(index > -1) {
+              this.tempProjectUserProfileSlides[4].datasets[0].data[index]++;
+              this.tempProjectUserProfileSlides[4].totalNum++;
             }
             // projectUserProfileSlides
 
