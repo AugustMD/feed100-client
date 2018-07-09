@@ -5,71 +5,95 @@
   Ionic pages and navigation.
 -->
 <div class="help" [ngStyle]="{'display': isHelpHide ? 'none' : 'flex'}">
-  <div class="help-wrapper p-l-28 p-r-28" text-center>
-    <h1 class="m-b-10">어떻게 써야할지 막막하시나요?</h1>
-    <h2 class="m-b-20">인터뷰 응답에 대한 팁!</h2>
-    <div class="help-references-wrapper m-b-20 p-l-16 p-r-16">
-      <span class="help-references p-l-20 p-r-20 p-t-20 p-b-20 width100">
-        <div class="help-references-inner">
-          <strong>1. How I Feel</strong><br>
-          &emsp;긍정, 부정, 비판 등 서비스에 대한 느낌을 솔직하게 작성합니다.<br><br>
-          <strong>2. What About</strong><br>
-          &emsp;앞서 느낀 감정이 어디서부터, 어떤 것에 대하여 그렇게 느낀 것인지 작성합니다.<br><br>
-          <strong>3. Why</strong><br>
-          &emsp;왜 그런 감정과 생각을 느끼고 작성했는지 이유에 대하여 작성합니다.<br><br>
-          <strong>4. Advice / Suggest</strong><br>
-          &emsp;장점은 부각시키고 단점은 보완할 수 있는 충고나 제안을 해주세요!
-        </div>
-      </span>
+    <div class="help-wrapper p-l-28 p-r-28" text-center>
+      <h1 class="m-b-10">어떻게 써야할지 막막하시나요?</h1>
+      <h2 class="m-b-20">인터뷰 응답에 대한 팁!</h2>
+      <div class="help-references-wrapper m-b-20 p-l-16 p-r-16">
+        <span class="help-references p-l-20 p-r-20 p-t-20 p-b-20 width100">
+          <div class="help-references-inner">
+            <strong>1. How I Feel</strong><br>
+            &emsp;긍정, 부정, 비판 등 서비스에 대한 느낌을 솔직하게 작성합니다.<br><br>
+            <strong>2. What About</strong><br>
+            &emsp;앞서 느낀 감정이 어디서부터, 어떤 것에 대하여 그렇게 느낀 것인지 작성합니다.<br><br>
+            <strong>3. Why</strong><br>
+            &emsp;왜 그런 감정과 생각을 느끼고 작성했는지 이유에 대하여 작성합니다.<br><br>
+            <strong>4. Advice / Suggest</strong><br>
+            &emsp;장점은 부각시키고 단점은 보완할 수 있는 충고나 제안을 해주세요!
+          </div>
+        </span>
+      </div>
+      <p><strong>솔직한</strong> 여러분의 이야기를 들려주세요!</p>
+      <h2 class="m-b-60"><small>[주의] 관련 없는 내용이나 욕설이나 비난 비방은 통보없이 삭제 및 프로젝트에서 제외될 수 있습니다.</small></h2>
+      <div class="hide-help-btn" (click)="help()" tappable>닫기</div>
     </div>
-    <p><strong>솔직한</strong> 여러분의 이야기를 들려주세요!</p>
-    <h2 class="m-b-60"><small>[주의] 관련 없는 내용이나 욕설이나 비난 비방은 통보없이 삭제 및 프로젝트에서 제외될 수 있습니다.</small></h2>
-    <div class="hide-help-btn" (click)="help()" tappable>닫기</div>
   </div>
-</div>
-<ion-header class="editor-header">
-  <ion-navbar>
-    <ion-buttons start>
-      <button class="dismiss-button" ion-button (click)="dismiss()" icon-only>
-        취소
-      </button>
-    </ion-buttons>
-    <ion-title>
-      인터뷰 질문
-      <span tappable class="help-btn" (click)="help()">
-        <ion-icon name="ios-help-circle-outline"></ion-icon>
-      </span>
-    </ion-title>
-    <ion-buttons end>
-      <button [disabled]="minTextLength > (answerContent | textcount)" class="complete-button" ion-button (click)="completeEditor()" icon-only>
-        완료
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-</ion-header>
-
-<ion-content class="editor-modal" #contentRef >
-  <div class="editor-content" style="height: 100%">
-    <div text-center class="p-t-30 p-l-28 p-r-28 p-b-30">
-      <div class="question-wrapper interview-question m-b-30 pre-line">Q. {{interviewQuestion}}</div>
-      <div class="buttons-wrapper m-b-30">
-        <span tappable class="editor-open-btn m-r-5" (click)="openUserProjectStoryVerticalPage()">&nbsp;스토리 다시보기&nbsp;</span>
-        <span tappable class="editor-open-btn m-l-5" (click)="openUserProjectInterviewDetailPage()">지난 인터뷰 보기</span>
-      </div>
-      <div class="interview-point-wrapper m-b-10" [ngStyle]="{'color': countColor(textCount(answerContent))}">
-        <div *ngIf="!is_max" text-center class="reward-point m-b-10"><span *ngIf="rewardPoint(textCount(answerContent)) > 0">+</span> {{rewardPoint(textCount(answerContent))}}p</div>
-        <div *ngIf="is_max" text-center class="reward-point max m-b-10">우수 참여자로 선정되면 2000P 추가!</div>
-        <div text-center class="point-notice">{{pointNotice(textCount(answerContent))}}</div>
-      </div>
-      <div class="interview-text-count-wrapper">
-        <div class="text-count-wrapper" [ngStyle]="{'left': textCountPercent(answerContent) + '%', 'margin-left': textCount(answerContent) > 9 ? '-2%' : '-3px', 'color': countColor(textCount(answerContent))}">{{textCount(answerContent)}}</div>
-        <div class="progress-outer">
-          <div class="progress-inner" [ngStyle]="{'background-color': countColor(textCount(answerContent))}" [style.width]="textCountPercent(answerContent) + '%'">
-              <!-- {{progress}}% -->
+  <ion-header class="editor-header">
+    <ion-navbar>
+      <ion-buttons start>
+        <button class="dismiss-button" ion-button (click)="dismiss()" icon-only>
+          취소
+        </button>
+      </ion-buttons>
+      <ion-title>
+        인터뷰 질문
+        <span tappable class="help-btn" (click)="help()">
+          <ion-icon name="ios-help-circle-outline"></ion-icon>
+        </span>
+      </ion-title>
+      <ion-buttons end>
+        <button [disabled]="minTextLength > (answerContent | textcount)" class="complete-button" ion-button (click)="completeEditor()" icon-only>
+          완료
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  
+  <!-- <ion-content class="editor-modal" #contentRef >
+    <div class="editor-content" style="height: 100%">
+      <div text-center class="p-t-30 p-l-28 p-r-28 p-b-30">
+        <div class="question-wrapper interview-question m-b-30 pre-line">Q. {{interviewQuestion}}</div>
+        <div class="buttons-wrapper m-b-30">
+          <span tappable class="editor-open-btn m-r-5" (click)="openUserProjectStoryVerticalPage()">&nbsp;스토리 다시보기&nbsp;</span>
+          <span tappable class="editor-open-btn m-l-5" (click)="openUserProjectInterviewDetailPage()">지난 인터뷰 보기</span>
+        </div>
+        <div class="interview-point-wrapper m-b-10" [ngStyle]="{'color': countColor(textCount(answerContent))}">
+          <div *ngIf="!is_max" text-center class="reward-point m-b-10"><span *ngIf="rewardPoint(textCount(answerContent)) > 0">+</span> {{rewardPoint(textCount(answerContent))}}p</div>
+          <div *ngIf="is_max" text-center class="reward-point max m-b-10">우수 참여자로 선정되면 2000P 추가!</div>
+          <div text-center class="point-notice">{{pointNotice(textCount(answerContent))}}</div>
+        </div>
+        <div class="interview-text-count-wrapper">
+          <div class="text-count-wrapper" [ngStyle]="{'left': textCountPercent(answerContent) + '%', 'margin-left': textCount(answerContent) > 9 ? '-2%' : '-3px', 'color': countColor(textCount(answerContent))}">{{textCount(answerContent)}}</div>
+          <div class="progress-outer">
+            <div class="progress-inner" [ngStyle]="{'background-color': countColor(textCount(answerContent))}" [style.width]="textCountPercent(answerContent) + '%'"></div>
           </div>
         </div>
-      </div>
-    </div> 
-    <textarea class="m-t-0 h-30" [(ngModel)]="answerContent" [placeholder]="contentPlaceholder"></textarea>
-  </div>
-</ion-content>
+      </div> 
+      <textarea class="m-t-0 h-30" [(ngModel)]="answerContent" [placeholder]="contentPlaceholder"></textarea>
+    </div>
+  </ion-content> -->
+  
+  
+  
+  <ion-content class="editor-modal" #contentRef>
+    <div class="editor-content" style="height: 100%;">
+      <div text-center class="p-t-30 p-l-28 p-r-28 p-b-30">
+        <div class="question-wrapper interview-question m-b-30 pre-line">Q. {{interviewQuestion}}</div>
+        <div class="buttons-wrapper m-b-30">
+          <span tappable class="editor-open-btn m-r-5" (click)="openUserProjectStoryVerticalPage()">&nbsp;스토리 다시보기&nbsp;</span>
+          <span tappable class="editor-open-btn m-l-5" (click)="openUserProjectInterviewDetailPage()">지난 인터뷰 보기</span>
+        </div>
+        <div class="interview-point-wrapper m-b-10" [ngStyle]="{'color': countColor(textCount(answerContent))}">
+          <div *ngIf="!is_max" text-center class="reward-point m-b-10"><span *ngIf="rewardPoint(textCount(answerContent)) > 0">+</span> {{rewardPoint(textCount(answerContent))}}p</div>
+          <div *ngIf="is_max" text-center class="reward-point max m-b-10">우수 참여자로 선정되면 2000P 추가!</div>
+          <div text-center class="point-notice">{{pointNotice(textCount(answerContent))}}</div>
+        </div>
+        <div class="interview-text-count-wrapper">
+          <div class="text-count-wrapper" [ngStyle]="{'left': textCountPercent(answerContent) + '%', 'margin-left': textCount(answerContent) > 9 ? '-2%' : '-3px', 'color': countColor(textCount(answerContent))}">{{textCount(answerContent)}}</div>
+          <div class="progress-outer">
+            <div class="progress-inner" [ngStyle]="{'background-color': countColor(textCount(answerContent))}" [style.width]="textCountPercent(answerContent) + '%'"></div>
+          </div>
+        </div>
+      </div> 
+      <textarea class="m-t-0 h-30" [(ngModel)]="answerContent" [placeholder]="contentPlaceholder"></textarea>
+    </div>
+  </ion-content>
