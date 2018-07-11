@@ -2,4 +2,21 @@ page-user-project-interview-answer {
     .help-references {
         border-radius: 20px !important;
     }
+
+    .interview-answer-content {
+        .question-box {
+            background-color: #FA9868;
+            border-radius: 10px;
+            box-shadow: 0px 8px 14px 4px rgba(0,0,0,0.15);
+            .question-header {
+                color: rgba(255,255,255,0.8);
+                .q-mark {
+                    font-size: 2.5rem;
+                }
+            }
+            .question-content {
+                color: #ffffff;
+            }
+        }
+    }
 }
