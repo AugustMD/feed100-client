@@ -238,7 +238,7 @@
 // }
 
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, AlertController, Content, Platform } from 'ionic-angular';
 
 import { ModalWrapperPage } from './../../common/modal-wrapper/modal-wrapper';
@@ -246,6 +246,16 @@ import { ModalWrapperPage } from './../../common/modal-wrapper/modal-wrapper';
 import { CommonServiceProvider } from '../../../providers/common-service/common-service';
 import { UserServiceProvider } from '../../../providers/user-service/user-service';
 import { DomSanitizer } from '@angular/platform-browser';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
+
+
+import { Hero } from './hero.service';
 
 /**
  * Generated class for the UserProjectInterviewAnswerPage page.
@@ -258,14 +268,30 @@ import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'page-user-project-interview-answer',
   templateUrl: 'user-project-interview-answer.html',
+  animations: [
+    trigger('heroState', [
+      state('inactive', style({
+        backgroundColor: '#eee',
+        transform: 'scale(1)'
+      })),
+      state('active',   style({
+        backgroundColor: '#cfd8dc',
+        transform: 'scale(1.1)'
+      })),
+      transition('inactive => active', animate('100ms ease-in')),
+      transition('active => inactive', animate('100ms ease-out'))
+    ])
+  ]
 })
 export class UserProjectInterviewAnswerPage {
+  @Input() heroes: Hero[];
   project_id;
   project_participant_id;
   interview_id;
 
   interviewQuestion;
   is_max;
+  is_fold;
   reward: number;
   textcount: number;
 
@@ -291,6 +317,7 @@ export class UserProjectInterviewAnswerPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserProjectInterviewAnswerPage');
     this.isHelpHide = true;
+    this.is_fold = false;
     this.project_id = 1;    
     this.project_participant_id = 1;
   }
@@ -445,5 +472,13 @@ export class UserProjectInterviewAnswerPage {
     else if(count < 50) { this.reward = (Math.floor(count/10))*100; }
     else { this.reward = 500; }
     return this.reward;
+  }
+
+  unFold() {
+    if(this.is_fold) {
+      this.is_fold = false;
+    } else {
+      this.is_fold = true;
+    }
   }
 }

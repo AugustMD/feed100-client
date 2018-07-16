@@ -75,35 +75,60 @@
   
   
   <ion-content class="editor-modal interview-answer-content" #contentRef>
+    <ul>
+      <li *ngFor="let hero of heroes"
+          [@heroState]="hero.state"
+          (click)="hero.toggleState()">
+        {{hero.name}}
+      </li>
+    </ul>
     <div class="editor-content" style="height: 100%;">
       <div class="p-t-20 p-l-20 p-r-20 p-b-30">
         <div class="p-l-24 p-r-24 question-box">
-          <div class="p-t-20 p-b-20 question-header">
+          <div class="p-t-16 p-b-16 question-header">
             <span class="q-mark">Q.</span>
-            <span float-right class="buttons-wrapper">
+            <span float-right class="buttons-wrapper" *ngIf="!is_fold">
               <span tappable class="m-r-5" (click)="openUserProjectStoryVerticalPage()">&nbsp;스토리 다시보기&nbsp;</span>
               <span>|</span>
               <span tappable class="m-l-5" (click)="openUserProjectInterviewDetailPage()">지난 인터뷰 보기</span>
             </span>
+            <span float-right class="buttons-wrapper" *ngIf="is_fold">
+              <span tappable (click)="unFold()">눌러서 펼쳐보기</span>
+            </span>
           </div>
-          <!-- <div class="p-b-16 question-content">{{interviewQuestion}}</div> -->
-          <!-- <div class="buttons-wrapper m-b-30">
-            <span tappable class="editor-open-btn m-r-5" (click)="openUserProjectStoryVerticalPage()">&nbsp;스토리 다시보기&nbsp;</span>
-            <span tappable class="editor-open-btn m-l-5" (click)="openUserProjectInterviewDetailPage()">지난 인터뷰 보기</span>
-          </div>
-          <div class="interview-point-wrapper m-b-10" [ngStyle]="{'color': countColor(textCount(answerContent))}">
-            <div *ngIf="!is_max" text-center class="reward-point m-b-10"><span *ngIf="rewardPoint(textCount(answerContent)) > 0">+</span> {{rewardPoint(textCount(answerContent))}}p</div>
-            <div *ngIf="is_max" text-center class="reward-point max m-b-10">우수 참여자로 선정되면 2000P 추가!</div>
-            <div text-center class="point-notice">{{pointNotice(textCount(answerContent))}}</div>
-          </div>
-          <div class="interview-text-count-wrapper">
-            <div class="text-count-wrapper" [ngStyle]="{'left': textCountPercent(answerContent) + '%', 'margin-left': textCount(answerContent) > 9 ? '-2%' : '-3px', 'color': countColor(textCount(answerContent))}">{{textCount(answerContent)}}</div>
-            <div class="progress-outer">
-              <div class="progress-inner" [ngStyle]="{'background-color': countColor(textCount(answerContent))}" [style.width]="textCountPercent(answerContent) + '%'"></div>
-            </div>
-          </div> -->
+          <div class="p-b-20 question-content" *ngIf="!is_fold">{{interviewQuestion}}</div>
         </div>
       </div> 
-      <textarea class="m-t-0 h-30" [(ngModel)]="answerContent" [placeholder]="contentPlaceholder"></textarea>
+      <div class="answer-box p-l-20 p-r-20">
+        <span class="a-mark p-l-24">A.</span>
+        <textarea tappable (click)="unFold()" class="m-t-0 h-30 answer-content" [(ngModel)]="answerContent" [placeholder]="contentPlaceholder"></textarea>
+      </div>
     </div>
   </ion-content>
+
+  <ion-footer class="editor-default-footer">
+    <div class="interview-text-count-wrapper">
+      <div class="progress-outer">
+        <div class="progress-inner" [ngStyle]="{'background-color': countColor(textCount(answerContent))}" [style.width]="textCountPercent(answerContent) + '%'"></div>
+      </div>
+    </div>
+    <ion-navbar>
+      <ion-buttons start>
+        <button class="dismiss-button" ion-button (click)="dismiss()" icon-only>
+          취소
+        </button>
+      </ion-buttons>
+      <ion-title>
+        <div class="interview-point-wrapper" [ngStyle]="{'color': countColor(textCount(answerContent))}">
+          <div *ngIf="is_max" text-center class="reward-point max">우수 참여자로 선정되면 2000P 추가!</div>
+          <div text-center class="point-notice">{{pointNotice(textCount(answerContent))}}</div>
+        </div>
+      </ion-title>
+      <ion-buttons end>
+        <button [disabled]="minTextLength > (answerContent | textcount)" class="complete-button" ion-button (click)="unFold()" icon-only>
+          <ion-icon name="md-create" *ngIf="!is_fold"></ion-icon>
+          <ion-icon name="ios-close" *ngIf="is_fold"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-footer>
