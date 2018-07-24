@@ -75,28 +75,23 @@
   
   
   <ion-content class="editor-modal interview-answer-content" #contentRef>
-    <ul>
-      <li *ngFor="let hero of heroes"
-          [@heroState]="hero.state"
-          (click)="hero.toggleState()">
-        {{hero.name}}
-      </li>
-    </ul>
     <div class="editor-content" style="height: 100%;">
       <div class="p-t-20 p-l-20 p-r-20 p-b-30">
-        <div class="p-l-24 p-r-24 question-box">
-          <div class="p-t-16 p-b-16 question-header">
+        <div class="p-t-16 p-b-16 question-box">
+          <div class="question-header p-l-24 p-r-24">
             <span class="q-mark">Q.</span>
-            <span float-right class="buttons-wrapper" *ngIf="!is_fold">
+            <span float-right class="buttons-wrapper" *ngIf="state == 'inactive'">
               <span tappable class="m-r-5" (click)="openUserProjectStoryVerticalPage()">&nbsp;스토리 다시보기&nbsp;</span>
               <span>|</span>
               <span tappable class="m-l-5" (click)="openUserProjectInterviewDetailPage()">지난 인터뷰 보기</span>
             </span>
-            <span float-right class="buttons-wrapper" *ngIf="is_fold">
+            <span float-right class="buttons-wrapper" *ngIf="state == 'active'">
               <span tappable (click)="unFold()">눌러서 펼쳐보기</span>
             </span>
           </div>
-          <div class="p-b-20 question-content" *ngIf="!is_fold">{{interviewQuestion}}</div>
+          <div class="question-content p-l-24 p-r-24" [@foldState]="state">
+            <div class="p-t-12">{{interviewQuestion}}</div>
+          </div>
         </div>
       </div> 
       <div class="answer-box p-l-20 p-r-20">
@@ -108,14 +103,19 @@
 
   <ion-footer class="editor-default-footer">
     <div class="interview-text-count-wrapper">
+      <div class="text-count-wrapper" [ngStyle]="{'left': textCountPercent(answerContent) + '%', 'margin-left': marginLeft(textCount(answerContent),textCountPercent(answerContent)), 'color': countColor(textCount(answerContent)), 'transition': 'all 0.4s ease-out'}">
+        <span class="text-count-box">
+          {{textCount(answerContent)}}
+        </span>
+      </div>
       <div class="progress-outer">
         <div class="progress-inner" [ngStyle]="{'background-color': countColor(textCount(answerContent))}" [style.width]="textCountPercent(answerContent) + '%'"></div>
       </div>
     </div>
     <ion-navbar>
       <ion-buttons start>
-        <button class="dismiss-button" ion-button (click)="dismiss()" icon-only>
-          취소
+        <button class="count-button" ion-button (click)="dismiss()" [ngStyle]="{'color': countColor(textCount(answerContent))}">
+          {{textCount(answerContent)}}
         </button>
       </ion-buttons>
       <ion-title>
@@ -125,9 +125,9 @@
         </div>
       </ion-title>
       <ion-buttons end>
-        <button [disabled]="minTextLength > (answerContent | textcount)" class="complete-button" ion-button (click)="unFold()" icon-only>
-          <ion-icon name="md-create" *ngIf="!is_fold"></ion-icon>
-          <ion-icon name="ios-close" *ngIf="is_fold"></ion-icon>
+        <button class="complete-button" ion-button (click)="unFold()" icon-only>
+          <ion-icon name="md-create" *ngIf="state == 'inactive'"></ion-icon>
+          <ion-icon name="ios-close" *ngIf="state == 'active'"></ion-icon>
         </button>
       </ion-buttons>
     </ion-navbar>

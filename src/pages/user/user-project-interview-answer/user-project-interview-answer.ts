@@ -254,9 +254,6 @@ import {
   transition
 } from '@angular/animations';
 
-
-import { Hero } from './hero.service';
-
 /**
  * Generated class for the UserProjectInterviewAnswerPage page.
  *
@@ -269,29 +266,26 @@ import { Hero } from './hero.service';
   selector: 'page-user-project-interview-answer',
   templateUrl: 'user-project-interview-answer.html',
   animations: [
-    trigger('heroState', [
+    trigger('foldState', [
       state('inactive', style({
-        backgroundColor: '#eee',
-        transform: 'scale(1)'
+        height: '*'
       })),
       state('active',   style({
-        backgroundColor: '#cfd8dc',
-        transform: 'scale(1.1)'
+        height: '0px'
       })),
-      transition('inactive => active', animate('100ms ease-in')),
-      transition('active => inactive', animate('100ms ease-out'))
+      transition('inactive => active', animate('300ms ease-in')),
+      transition('active => inactive', animate('300ms ease-out'))
     ])
   ]
 })
 export class UserProjectInterviewAnswerPage {
-  @Input() heroes: Hero[];
+  state;
   project_id;
   project_participant_id;
   interview_id;
 
   interviewQuestion;
   is_max;
-  is_fold;
   reward: number;
   textcount: number;
 
@@ -317,7 +311,7 @@ export class UserProjectInterviewAnswerPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserProjectInterviewAnswerPage');
     this.isHelpHide = true;
-    this.is_fold = false;
+    this.state = "inactive";
     this.project_id = 1;    
     this.project_participant_id = 1;
   }
@@ -475,10 +469,14 @@ export class UserProjectInterviewAnswerPage {
   }
 
   unFold() {
-    if(this.is_fold) {
-      this.is_fold = false;
-    } else {
-      this.is_fold = true;
-    }
+    this.state = this.state === 'active' ? 'inactive' : 'active';
+  }
+
+  marginLeft(count,percent) {
+    if(percent > 98) return '0px';
+    if(count < 3) return '2px';
+    if(count > 9) return '-2.3%';
+    if(count > 100) return '-4.3%';
+    else return '-3px';
   }
 }
