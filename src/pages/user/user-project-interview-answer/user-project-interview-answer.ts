@@ -240,6 +240,7 @@
 
 import { Component, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, AlertController, Content, Platform } from 'ionic-angular';
+import { Keyboard } from '@ionic-native/keyboard';
 
 import { ModalWrapperPage } from './../../common/modal-wrapper/modal-wrapper';
 
@@ -268,13 +269,13 @@ import {
   animations: [
     trigger('foldState', [
       state('inactive', style({
-        height: '*'
+        height: '*',
       })),
       state('active',   style({
-        height: '0px'
+        height: '0px',
       })),
-      transition('inactive => active', animate('300ms ease-in')),
-      transition('active => inactive', animate('300ms ease-out'))
+      transition('inactive => active', animate('300ms ease-out')),
+      transition('active => inactive', animate('300ms ease-in'))
     ])
   ]
 })
@@ -294,6 +295,7 @@ export class UserProjectInterviewAnswerPage {
   minTextLength: number = 20;
   maxTextLength: number = 50;
   isHelpHide: boolean;
+  pulse_animated: boolean;
 
   constructor(
     public navCtrl: NavController, 
@@ -304,14 +306,17 @@ export class UserProjectInterviewAnswerPage {
     public userService: UserServiceProvider,
     public ModalWrapperPage: ModalWrapperPage,
     private platform: Platform,    
+    private keyboard: Keyboard,
     private domSanitizer: DomSanitizer) {
       this.initializeBackButtonCustomHandler();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserProjectInterviewAnswerPage');
+    this.reward = 0;
     this.isHelpHide = true;
     this.state = "inactive";
+    this.pulse_animated = false;
     this.project_id = 1;    
     this.project_participant_id = 1;
   }
@@ -462,21 +467,36 @@ export class UserProjectInterviewAnswerPage {
   }
 
   rewardPoint(count) {
+    let old_reward = this.reward;
     if(count < 20) { this.reward = 0; }
-    else if(count < 50) { this.reward = (Math.floor(count/10))*100; }
-    else { this.reward = 500; }
+    else if(count < 50) {
+      this.reward = (Math.floor(count/10))*100;
+    }
+    else {
+      this.reward = 500;
+    }
+    if(this.reward > old_reward) {
+      setTimeout(() => {
+        this.pulse_animated = true;
+        console.log(this.pulse_animated);
+      }, 50);
+      setTimeout(() => {
+        this.pulse_animated = false;
+      }, 100);
+    }
     return this.reward;
   }
 
-  unFold() {
+  folding() {
     this.state = this.state === 'active' ? 'inactive' : 'active';
   }
-
-  marginLeft(count,percent) {
-    if(percent > 98) return '0px';
-    if(count < 3) return '2px';
-    if(count > 9) return '-2.3%';
-    if(count > 100) return '-4.3%';
-    else return '-3px';
+  fold() {
+    this.state = "active";
+  }
+  unfold() {
+    this.state = "inactive";
+  }
+  keyboardCheck() {
+    console.log('The keyboard is open:', this.keyboard.close());
   }
 }

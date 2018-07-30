@@ -33,9 +33,40 @@ page-user-project-interview-answer {
         }
     }
     .answer-box {
-        .a-mark {
-            font-size: 2.5rem;
-            color: #383838;
+        .answer-mark-wrapper {
+            display: flex;
+            .a-mark {
+                font-size: 2.5rem;
+                color: #383838;
+            }
+            .text-count-box {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;   
+                .point-wrapper {
+                    display: flex;
+                    // align-items: center;
+                    .coin-icon {
+                        display: inline-flex;
+                        margin-right: 8px;
+                        img {
+                            width: 24px;
+                            height: 24px;
+                        }
+                    }
+                    
+                    .point {
+                        font-size: 1.7rem;
+                        display: inline-block;
+                        font-weight: bold;
+                    }
+                }
+                .text-count {
+                    text-align: right;
+                    font-size: 8px;
+                }
+            }
         }
         .answer-content {
             padding: 4px;
@@ -44,14 +75,17 @@ page-user-project-interview-answer {
     }
 }
 
+@keyframes pulseAnimation {
+    0% {transform: scale(1.2);}
+    100% {transform: scale(1);}
+}
+.pulse-animated {
+    animation: pulseAnimation 0.3s;
+}
+
 .editor-default-footer {
     .text-count-wrapper {
         position: relative;
-        padding: 2px 4px;
-        box-shadow: 0px 2px 4px 2px rgba(0,0,0,0.15);
-        border-radius: 4px;
-        display: inline-block;
-        margin-bottom : 4px;
     }
     .progress-outer {
         width: 100%;
@@ -78,7 +112,8 @@ page-user-project-interview-answer {
     }
     .bar-button {
         width: 2em;
-        font-size: 1.4rem;
+        font-size: 1.3rem !important;
+        color: #484848;
     }
     .count-button {
         .button-inner {

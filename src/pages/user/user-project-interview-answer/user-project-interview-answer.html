@@ -36,9 +36,6 @@
       </ion-buttons>
       <ion-title>
         인터뷰 질문
-        <span tappable class="help-btn" (click)="help()">
-          <ion-icon name="ios-help-circle-outline"></ion-icon>
-        </span>
       </ion-title>
       <ion-buttons end>
         <button [disabled]="minTextLength > (answerContent | textcount)" class="complete-button" ion-button (click)="completeEditor()" icon-only>
@@ -86,7 +83,7 @@
               <span tappable class="m-l-5" (click)="openUserProjectInterviewDetailPage()">지난 인터뷰 보기</span>
             </span>
             <span float-right class="buttons-wrapper" *ngIf="state == 'active'">
-              <span tappable (click)="unFold()">눌러서 펼쳐보기</span>
+              <span tappable (click)="unfold()">눌러서 펼쳐보기</span>
             </span>
           </div>
           <div class="question-content p-l-24 p-r-24" [@foldState]="state">
@@ -95,27 +92,33 @@
         </div>
       </div> 
       <div class="answer-box p-l-20 p-r-20">
-        <span class="a-mark p-l-24">A.</span>
-        <textarea tappable (click)="unFold()" class="m-t-0 h-30 answer-content" [(ngModel)]="answerContent" [placeholder]="contentPlaceholder"></textarea>
+        <div class="answer-mark-wrapper">
+          <span class="a-mark p-l-24">A.</span>
+          <div class="p-r-16 text-count-box">
+            <div>
+              <div class="point-wrapper" [ngClass]="{'pulse-animated': pulse_animated}">
+                <span class="coin-icon"><img src="assets/img/feed100-coin-single.png" /></span>
+                <span class="point"><span *ngIf="rewardPoint(textCount(answerContent)) > 0">+</span> {{rewardPoint(textCount(answerContent))}}p</span>
+              </div>
+              <div class="text-count">( {{textCount(answerContent)}}자 )</div>
+            </div>
+          </div>
+        </div>
+        <textarea tappable (click)="fold()" class="m-t-0 h-30 answer-content" [(ngModel)]="answerContent" [placeholder]="contentPlaceholder"></textarea>
       </div>
     </div>
   </ion-content>
 
   <ion-footer class="editor-default-footer">
     <div class="interview-text-count-wrapper">
-      <div class="text-count-wrapper" [ngStyle]="{'left': textCountPercent(answerContent) + '%', 'margin-left': marginLeft(textCount(answerContent),textCountPercent(answerContent)), 'color': countColor(textCount(answerContent)), 'transition': 'all 0.4s ease-out'}">
-        <span class="text-count-box">
-          {{textCount(answerContent)}}
-        </span>
-      </div>
       <div class="progress-outer">
         <div class="progress-inner" [ngStyle]="{'background-color': countColor(textCount(answerContent))}" [style.width]="textCountPercent(answerContent) + '%'"></div>
       </div>
     </div>
     <ion-navbar>
       <ion-buttons start>
-        <button class="count-button" ion-button (click)="dismiss()" [ngStyle]="{'color': countColor(textCount(answerContent))}">
-          {{textCount(answerContent)}}
+        <button class="complete-button" ion-button (click)="help()" icon-only>
+          <ion-icon name="ios-help-circle-outline"></ion-icon>
         </button>
       </ion-buttons>
       <ion-title>
@@ -125,9 +128,9 @@
         </div>
       </ion-title>
       <ion-buttons end>
-        <button class="complete-button" ion-button (click)="unFold()" icon-only>
+        <button class="complete-button" ion-button (click)="folding()" icon-only>
           <ion-icon name="md-create" *ngIf="state == 'inactive'"></ion-icon>
-          <ion-icon name="ios-close" *ngIf="state == 'active'"></ion-icon>
+          <ion-icon name="ios-arrow-down" *ngIf="state == 'active'"></ion-icon>
         </button>
       </ion-buttons>
     </ion-navbar>
